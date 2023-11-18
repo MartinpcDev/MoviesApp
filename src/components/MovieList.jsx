@@ -1,17 +1,29 @@
-import { FaFireAlt } from 'react-icons/fa'
+import _ from 'lodash'
 import { MovieCard } from './MovieCard'
 import { useEffect, useState } from 'react'
+import { FilterGroup } from './FilterGroup'
 
-export const MovieList = () => {
+export const MovieList = ({ type, title, emoji }) => {
   const [movies, setMovies] = useState([])
   const [filterMovies, setfilterMovies] = useState([])
   const [minRating, setMinRating] = useState(0)
+  const [sort, setSort] = useState({
+    by: 'default',
+    order: 'asc'
+  })
   useEffect(() => {
     cargarDatos()
   }, [])
 
+  useEffect(() => {
+    if (sort.by !== 'default') {
+      const sorteredMovies = _.orderBy(filterMovies, [sort.by], [sort.order])
+      setfilterMovies(sorteredMovies)
+    }
+  }, [sort])
+
   const cargarDatos = async () => {
-    const response = await fetch('https://api.themoviedb.org/3/movie/popular?api_key=b206319c653018769a8894d6b1f9b98e')
+    const response = await fetch(`https://api.themoviedb.org/3/movie/${type}?api_key=b206319c653018769a8894d6b1f9b98e`)
     const data = await response.json()
     setMovies(data.results)
     setfilterMovies(data.results)
@@ -28,51 +40,25 @@ export const MovieList = () => {
     }
   }
 
+  const handleSort = (e) => {
+    const { name, value } = e.target
+    setSort({ ...sort, [name]: value })
+  }
+  // console.log(sort)
   return (
-    <section className=''>
+    <section className='' id={type}>
       <header className='py-[10px] px-[30px] flex items-center justify-between mb-[5px]'>
-        <h2 className='text-[#ffe400] flex items-center text-[26px]'>Popular<FaFireAlt className='w-[25px] h-[25px] ml-[7px]' /></h2>
+        <h2 className='text-black dark:text-[#ffe400] flex items-center text-[26px] font-[700]'>{title}{' '}{emoji}</h2>
         <div className='flex items-center'>
-          <ul className='flex items-center list-none text-[16px]'>
-            <li
-              className={
-                minRating === 8
-                  ? 'py-[5px] px-[10px] cursor-pointer activo'
-                  : 'py-[5px] px-[10px] cursor-pointer'
-}
-              onClick={() => handleRating(8)}
-            >
-              8+ star
-            </li>
-            <li
-              className={
-              minRating === 7
-                ? 'py-[5px] px-[10px] cursor-pointer activo'
-                : 'py-[5px] px-[10px] cursor-pointer'
-}
-              onClick={() => handleRating(7)}
-            >
-              7+ star
-            </li>
-            <li
-              className={
-              minRating === 6
-                ? 'py-[5px] px-[10px] cursor-pointer activo'
-                : 'py-[5px] px-[10px] cursor-pointer'
-}
-              onClick={() => handleRating(6)}
-            >
-              6+ star
-            </li>
-          </ul>
-          <select className='border-none outline-none rounded-sm text-[16px] font-[500] h-[30px] px-[5px] py-0 my-0 mx-[10px] text-black' name='' id=''>
-            <option className='' value=''>SortBy</option>
-            <option value=''>Date</option>
-            <option value=''>Rating</option>
+          <FilterGroup minRating={minRating} onRatingClick={handleRating} ratings={[8, 7, 6]} />
+          <select className='border-none outline-none rounded-sm text-[16px] font-[500] h-[30px] px-[5px] py-0 my-0 mx-[10px] text-black' name='by' onChange={handleSort} value={sort.by}>
+            <option value='default'>SortBy</option>
+            <option value='release_date'>Date</option>
+            <option value='vote_overage'>Rating</option>
           </select>
-          <select className='border-none outline-none rounded-sm text-[16px] font-[500] h-[30px] px-[5px] py-0 my-0 mx-[10px] text-black' name='' id=''>
-            <option value=''>Ascending</option>
-            <option value=''>Descending</option>
+          <select className='border-none outline-none rounded-sm text-[16px] font-[500] h-[30px] px-[5px] py-0 my-0 mx-[10px] text-black' name='order' onChange={handleSort} value={sort.order}>
+            <option value='asc'>Ascending</option>
+            <option value='desc'>Descending</option>
           </select>
         </div>
       </header>
