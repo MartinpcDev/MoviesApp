@@ -1,8 +1,13 @@
 import { CiStar } from 'react-icons/ci'
+import { Link } from 'react-router-dom'
 
 export const MovieCard = ({ movie }) => {
   return (
-    <a href={`https://www.themoviedb.org/movie/${movie.id}`} target='_blank' className='relative w-[200px] h-[300px] m-[15px] overflow-hidden rounded-[10px] text-[#fff] shadow-[rgba(0,0,0,0.25)] shadow-md hover:scale-110 transition-all ease-in-out duration-300' rel='noreferrer'>
+    <Link
+      to={`/movie/${movie.id}`}
+      className='relative w-[200px] h-[300px] m-[15px] overflow-hidden rounded-[10px] text-[#fff] shadow-[rgba(0,0,0,0.25)] shadow-md hover:scale-110 transition-all ease-in-out duration-300'
+      rel='noreferrer'
+    >
       <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt='movie poster' />
       <div className='absolute top-0 w-full h-full p-[10px] from-black flex flex-col justify-end opacity-0 hover:opacity-100 transition-all ease-in-out duration-200'>
         <h3 className='text-[16px] text-[#ffe400]'>{movie.original_title}</h3>
@@ -12,6 +17,6 @@ export const MovieCard = ({ movie }) => {
         </div>
         <p className='text-[12px] italic'>{movie.overview.slice(0, 100) + '...'}</p>
       </div>
-    </a>
+    </Link>
   )
 }

@@ -13,7 +13,7 @@ export const MovieList = ({ type, title, emoji }) => {
   })
   useEffect(() => {
     cargarDatos()
-  }, [])
+  }, [type])
 
   useEffect(() => {
     if (sort.by !== 'default') {
@@ -46,10 +46,10 @@ export const MovieList = ({ type, title, emoji }) => {
   }
   // console.log(sort)
   return (
-    <section className='' id={type}>
-      <header className='py-[10px] px-[30px] flex items-center justify-between mb-[5px]'>
+    <section className='h-auto' id={type}>
+      <header className='py-[10px] px-[30px] flex flex-col md:flex-row items-center justify-between mb-[5px]'>
         <h2 className='text-black dark:text-[#ffe400] flex items-center text-[26px] font-[700]'>{title}{' '}{emoji}</h2>
-        <div className='flex items-center'>
+        <div className='flex flex-col md:flex-row items-center gap-4'>
           <FilterGroup minRating={minRating} onRatingClick={handleRating} ratings={[8, 7, 6]} />
           <select className='border-none outline-none rounded-sm text-[16px] font-[500] h-[30px] px-[5px] py-0 my-0 mx-[10px] text-black' name='by' onChange={handleSort} value={sort.by}>
             <option value='default'>SortBy</option>
