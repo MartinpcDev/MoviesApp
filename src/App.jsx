@@ -22,16 +22,18 @@ export const App = () => {
     }
   }, [theme])
   return (
-    <div className='w-screen h-fit font-montserrat bg-white text-black dark:bg-black dark:text-white transition-colors duration-300 ease-in-out'>
-      <NavBar setTheme={setTheme} />
-      <main>
-        <Routes>
-          <Route path='/' element={<MovieList type='popular' title='Popular' emoji={<FaFireAlt className='w-[25px] h-[25px] ml-[7px] text-[#ffe400]' />} />} />
-          <Route path='/top_rated' element={<MovieList type='top_rated' title='Top Rated' emoji={<CiStar className='w-[25px] h-[25px] ml-[7px] text-[#ffe400]' />} />} />
-          <Route path='/upcoming' element={<MovieList type='upcoming' title='Upcoming' emoji={<LuPartyPopper className='w-[25px] h-[25px] ml-[7px] text-[#ffe400]' />} />} />
-          <Route path='/movie/:movieId' element={<SingleMovie />} />
-        </Routes>
-      </main>
-    </div>
+    <html className='w-screen min-h-screen bg-white text-black dark:bg-black dark:text-white scroll-smooth'>
+      <div className='font-montserrat transition-colors duration-300 ease-in-out'>
+        <NavBar setTheme={setTheme} />
+        <main>
+          <Routes>
+            <Route path='/' element={<MovieList type='popular' title='Popular' emoji={<FaFireAlt className='w-[25px] h-[25px] ml-[7px] text-[#ffe400]' />} />} />
+            <Route path='/top_rated' element={<MovieList type='top_rated' title='Top Rated' emoji={<CiStar className='w-[25px] h-[25px] ml-[7px] text-[#ffe400]' />} />} />
+            <Route path='/upcoming' element={<MovieList type='upcoming' title='Upcoming' emoji={<LuPartyPopper className='w-[25px] h-[25px] ml-[7px] text-[#ffe400]' />} />} />
+            <Route path='/movie/:movieId' element={<SingleMovie />} />
+          </Routes>
+        </main>
+      </div>
+    </html>
   )
 }
